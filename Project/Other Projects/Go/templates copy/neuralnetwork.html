@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>GoBike neural network hadoop-pyspark</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://bootswatch.com/3/paper/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar-1" aria-exanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><img src="/static/images/Ford_GoBike_logo.png" width=150px>Data Visualization and Analysis</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Menu<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/chords">D3 chord diagram</a></li>
+                                <li><a href="/parallel">parallel coordinate diagram</a></li>
+                                <li><a href="/tableau">tableau summary</a></li>
+                                <li><a href="/sklearn">sklearn machine learning</a></li>
+                                <li><a href="/NeuralNetwork">neural network predictive model</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/data">data</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li><a href="/process">process</a></li>
+                        <li><a href="/summary">summary</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <style>
+        * {
+            margin: 20;
+            padding: 20;
+        }
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+        </style>
+        <div class="row">
+            <div id="menu" class="col-md-2" style="padding:50px; text-align:left">
+                <div class="vertical-menu">
+                    <a href="/">Home</a>
+                    <a href="/tableau">Tableau Data Visualization</a>
+                    <a href="/chords">Chord flow Diagram</a>
+                    <a href="/parallel">Parallel Coordinate Diagram</a>
+                    <a href="/sklearn">Regression models</a>
+                    <a href="#" class="active">Neural Network computing</a>
+                </div>
+            </div>
+            <div id="menu" class="col-md-10" style="padding:50px; text-align:left">
+                <div style="padding:50px; text-align:left">
+                    <h2>Neural Networks applied to bike sharing usage forecasting</h2>
+                    <p style="font-size:16pt">by Paco Rosas  |  powered by <img src="static/images/spark_tf_python.png" height="60px"></p>
+                </div>
+                <div style="padding:50px; text-align:left">
+                    <p>Used to predict bike usage in San Francisco on a per hour basis.</p><br>
+                    <p style="color:darkblue">Pre-analysis data visualization</p>
+                    <p>Correlation analysis between all the variables:</p>
+                </div>
+                <div class="col-md-10" style="padding:50px">
+                    <div id="intro" class="imgbox">
+                        <img class="center-fit" src="static/images/correlation_analysis.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end of row 1 -->
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-5" style="padding:50px">
+                    <div id="intro" class="imgbox">
+                        <img class="center-fit" src="static/images/hour_vs_usage_temp_ranges.png">
+                    </div>
+            </div>
+            <div class="col-md-5" style="padding:50px">
+                    <div id="intro" class="imgbox">
+                        <img class="center-fit" src="static/images/hour_vs_usage_wkday_wkend.png">
+                    </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10" style="padding:50px; text-align:left">
+                <p style="color:darkblue">Neural Network details:</p>
+                <p>Data was converted from a time series (each row represents a date with a periodicity of one hour) into a supervised learning problem, where each row (observation) included the values for the previous observation. After that, a neural network with a hidden LSTM (Long Short Term Memory) layer was used to build the model from the training data. LSTMs are a type of Recurrent Neural Network. This is a useful approach to time series forecasting with multiple variables (pressure, temperature, etc. in our case).</p>
+                <br>
+                <p style="color:darkblue">Notes:</p>
+                <ul>
+                    <li>Data cleaning was vital for good results</li>
+                    <li>For instance, added average values for pressure and temperature for missing values and remove rows with duplicated indexes (important since these are timestamps)</li>
+                    <li>For simplicity, weather was categorized into rain/no rain</li>
+                    <li>An integer for the day of the week was added to the dataset</li>
+                </ul>
+                <br>
+                <p style="color:darkblue">Possible improvements:</p>
+                <ul>
+                    <li>Further neural network tuning (nodes, layers, batches, etc.)</li>
+                    <li>Fill missing rows (timestamps missing)</li>
+                    <li>OneHot Encode for the day of the week, instead of using integers</li>
+                    <li>We are not considering seasonality, day (of the week), hour. This could be addressed with <u>Seasonal Adjustment</u>, or Deseasonalizing.</li>
+                </ul>
+            </div>
+        </div>
+        <!-- end of row 2 -->
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10" style="padding:50px; text-align:left">
+                <br>
+                <p style="color:darkblue">TEST RESULTS</p>
+                <p>4 weeks of training data</p>
+                <p>1 week of test and validation data</p>
+                <p>4 Inputs (per hour):</p>
+                <ul>
+                    <li>Weekday (integer)</li>
+                    <li>Pressure</li>
+                    <li>Rain (yes/no)</li>
+                    <li>Temperature</li>
+                </ul>
+                <p>1 Output:</p>
+                <ul>
+                    <li>Bike Usage Count (per hour)</li>
+                </ul>
+                <br>
+                <h3>Test RMSE: 137.026</h3>
+                <p>Root Mean Square Error: If <img src="/static/images/yi_cir.png"> is the predicted value of the <i><b>i</b></i>-th sample, and <i><b>Yi</b></i> is the corresponding true value, then the mean squared error (MSE) estimated over <i><b>n-samples</b></i> is defined as:</p>
+            </div>
+        </div>
+        <!-- end of row 3 -->
+    
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10" style="padding:50px; text-align:left">
+                    <div id="intro" class="imgbox">
+                        <img class="center-fit" src="static/images/formula.png">
+                    </div>
+                    <p>Normalized RMSE (RMSE/(y_max-y_min)): 0.160</p>
+                    <p style="color:darkblue">Training and test loss:</p>
+            </div>
+        </div>
+        <!-- end of row 4 -->
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10" style="padding:50px; text-align:left">
+                <p style="color:darkblue">Training and test loss:</p>
+                <div id="intro" class="imgbox">
+                    <img class="center-fit" src="static/images/training_test_loss.png">
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-10" style="padding:50px; text-align:left">
+                <div id="intro" class="imgbox">
+                    <img class="center-fit" src="static/images/Prediction_VS_Data_4weeksTraining_1weekPrediction_weekdayNotHotEncoded.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="authorline">
+                    <p>
+                        Jonathan Ahn, Paco Rosas, Takako Omori, Olivier Brouard  | Bootcamp UCB Data Analytics 2018 |
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.3/d3.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://www.numericjs.com/lib/numeric-1.2.6.js"></script>
+<script type="text/javascript">
+    var hello = "hello";
+</script>
+<style>
+    body {
+        overflow: scroll;
+    }
+
+    #row {
+        align-content: initial;
+    }
+    .vertical-menu {
+    width: 200px; /* Set a width if you like */
+}
+
+.vertical-menu a {
+    background-color: #eee; /* Grey background color */
+    color: black; /* Black text color */
+    display: block; /* Make the links appear below each other */
+    padding: 12px; /* Add some padding */
+    text-decoration: none; /* Remove underline from links */
+}
+
+.vertical-menu a:hover {
+    background-color: #ccc; /* Dark grey background on mouse-over */
+}
+
+.vertical-menu a.active {
+    background-color: rgb(109, 204, 199);
+    color: white;
+}
+</style>
+</body>
+</html>
