@@ -1,4 +1,4 @@
 # repo-DS
 
 Data Science study material 
-Projects
+and Projects
